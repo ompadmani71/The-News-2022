@@ -48,7 +48,7 @@ class _CategoryNewsState extends State<CategoryNews> {
                       GestureDetector(
                         onTap: () async {
                           cont.selectedCategory.value = index;
-                          await cont.getCategoryNews();
+                          await cont.getCategoryNews(category: itemCategory.title);
                         },
                         child: Container(
                            margin : EdgeInsets.only(left: 5),

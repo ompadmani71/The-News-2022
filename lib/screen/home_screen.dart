@@ -19,6 +19,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  final HomeController _homeController = HomeController();
+
+  @override
+  void initState(){
+    super.initState();
+
+    _homeController.getCategoryNews(category: "Entertainment");
+  }
+
   String strToday = DateFormat('EEEE, MMM dd, yyyy').format(DateTime.now());
 
   List<CategoryModel> listCategories = [
@@ -40,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: GetX<HomeController>(builder: (cont) {
           if (cont.error.value.errorType == ErrorType.internet) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -100,14 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 15.h),
                 CategoryNews(listCategories: listCategories),
-                if (cont.categoryNewsData.value.articles.isNotEmpty)
+
+
+                if (cont.newsCatData.value.articles.isNotEmpty)
                   Expanded(
                       child: ListView.builder(
                           itemCount:
-                              cont.categoryNewsData.value.articles.length,
+                              cont.newsCatData.value.articles.length,
                           itemBuilder: (context, index) {
                             Article newsData =
-                                cont.categoryNewsData.value.articles[index];
+                                cont.newsCatData.value.articles[index];
 
                             String publishedAt = DateFormat('dd,MMM yyyy').format(newsData.publishedAt);
                             
@@ -117,8 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // height: 200.w,
                                 child: Container(
                                   padding: const EdgeInsets.all(15),
-                                  margin: EdgeInsets.all(10),
+                                  margin: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                                   decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
                                     boxShadow: [BoxShadow(
                                       color: Colors.black.withOpacity(0.1),
@@ -132,26 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           ClipRRect(
                                             borderRadius: BorderRadius.circular(8.0),
-                                            child:
-                                            // (newsData.url)
-                                            CachedNetworkImage(
-                                              imageUrl: newsData.urlToImage ?? "",
-                                              fit: BoxFit.cover,
-                                              width: 70.w,
-                                              height: 70.w,
-                                              placeholder: (context, url) {
-                                                return ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8.0),
-                                                  child: Image.asset(
-                                                    'assets/images/img_placeholder.jpg',
-                                                    fit: BoxFit.cover,
-                                                    width: 200.w,
-                                                    height: 200.w,
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                            child: (newsData.urlToImage != null) ? Image.network(newsData.urlToImage!,height: 70,width: 100,fit: BoxFit.fill,): Image.asset("assets/images/img_placeholder.jpg",scale: 50,)
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -175,15 +169,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       SizedBox(height: 5.w),
                                       Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text("Author: ",style: TextStyle(
                                             color: Colors.black
                                           ),),
-                                          Text(
-                                            newsData.author ?? "",
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 13.sp,
+                                          Expanded(
+                                            child: Text(
+                                              newsData.author ?? "",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 13.sp,
+                                              ),
                                             ),
                                           ),
                                         ],

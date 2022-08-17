@@ -12,6 +12,7 @@ class ApiService {
   Future<void> getRequest({
     required String url,
     Map<String, dynamic>? header,
+    Map<String, dynamic>? queryParameters,
     required Function(Map<String, dynamic>) onSuccess,
     required Function(ErrorType, String?) onError,
   }) async {
@@ -20,7 +21,7 @@ class ApiService {
       if (header != null) {
         _dio.options.headers.addAll(header);
       }
-      var response = await _dio.get(url);
+      var response = await _dio.get(url,queryParameters: queryParameters);
       log('response  ===>  $response');
       Map<String, dynamic> data = {};
       data["response"] = response.data;
