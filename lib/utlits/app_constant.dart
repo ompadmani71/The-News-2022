@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppImage{
   static String baseImagePath = "assets/images";
@@ -34,9 +33,9 @@ class AppColors {
 
 class TextStyles {
   static TextStyle labelStyle = TextStyle(
-    fontSize: 10.sp,fontWeight: FontWeight.w400,color: AppColors.lightPurple
-  );static TextStyle titleStyle = TextStyle(
-    fontSize: 11.sp,fontWeight: FontWeight.w600,color: Colors.black
+    fontSize: 10,fontWeight: FontWeight.w400,color: AppColors.lightPurple
+  );static TextStyle titleStyle = const TextStyle(
+    fontSize: 11,fontWeight: FontWeight.w600,color: Colors.black
   );
 }
 

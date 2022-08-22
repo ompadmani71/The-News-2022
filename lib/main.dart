@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:the_news/screen/home_screen.dart';
 import 'package:the_news/utlits/app_constant.dart';
-
-import 'controller/home_controller.dart';
-
 void main() async {
   runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,27 +16,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  final HomeController _homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-        designSize: const Size(360, 690),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return GetMaterialApp(
+ return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor: AppColors.lightPurple,
               primarySwatch: materialPurpleColor,
               fontFamily: "OpenSans",
             ),
-            home: child,
+            home: const HomeScreen(),
           );
-        },
-        child: const HomeScreen()
-    );
   }
 
   MaterialColor materialPurpleColor = MaterialColor(

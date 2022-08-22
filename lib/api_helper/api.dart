@@ -6,4 +6,6 @@ class ApiUrl {
 
   static const String headline = "$_baseUrl/v2/top-headlines";
 
+  static const String apiKey = "134e85696523497f888229d1c1056a1d";
+
 }
