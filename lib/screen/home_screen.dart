@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 10),
               Row(
                 children: <Widget>[
                   const Expanded(
@@ -104,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                     child: ListView.builder(
                         itemCount: ApiData.allNewsData.articles.length,
+                        physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           Article newsData =
                               ApiData.allNewsData.articles[index];
@@ -234,69 +236,72 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   categoryWidget({required List<CategoryModel> listCategories}) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 35,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              var itemCategory = listCategories[index];
-              return Column(
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      // cont.selectedCategory.value = index;
-                      setState(() {
-                        ApiData.selectedCategory = itemCategory.title;
-                      });
-                      NewsModel? newsData = await NewsApiHelper.newsApiHelper
-                          .getCategoryNews(category: itemCategory.title);
-
-                      print("${newsData?.articles.length}");
-                      if (newsData != null) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 35,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                var itemCategory = listCategories[index];
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        // cont.selectedCategory.value = index;
                         setState(() {
-                          ApiData.allNewsData = newsData;
+                          ApiData.selectedCategory = itemCategory.title;
                         });
-                      }
-                      setState(() {});
-                      // await cont.getCategoryNews(category: itemCategory.title);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(left: 5),
-                      padding: itemCategory.title.toLowerCase() == 'all'
-                          ? const EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 10)
-                          : EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: itemCategory.title.toLowerCase() == 'all'
-                            ? const Color(0xFFBBCDDC)
-                            : null,
-                        borderRadius: BorderRadius.circular(10),
-                        image: itemCategory.title.toLowerCase() == 'all'
-                            ? null
-                            : DecorationImage(
-                                image: AssetImage(
-                                  itemCategory.image,
+                        NewsModel? newsData = await NewsApiHelper.newsApiHelper
+                            .getCategoryNews(category: itemCategory.title);
+
+                        print("${newsData?.articles.length}");
+                        if (newsData != null) {
+                          setState(() {
+                            ApiData.allNewsData = newsData;
+                          });
+                        }
+                        setState(() {});
+                        // await cont.getCategoryNews(category: itemCategory.title);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5),
+                        padding: itemCategory.title.toLowerCase() == 'all'
+                            ? const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 10)
+                            : EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: itemCategory.title.toLowerCase() == 'all'
+                              ? const Color(0xFFBBCDDC)
+                              : null,
+                          borderRadius: BorderRadius.circular(10),
+                          image: itemCategory.title.toLowerCase() == 'all'
+                              ? null
+                              : DecorationImage(
+                                  image: AssetImage(
+                                    itemCategory.image,
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          itemCategory.title,
-                          style: TextStyle(color: Colors.white),
+                        ),
+                        child: Center(
+                          child: Text(
+                            itemCategory.title,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-            itemCount: listCategories.length,
+                  ],
+                );
+              },
+              itemCount: listCategories.length,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
