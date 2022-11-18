@@ -71,18 +71,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Provider.of<ThemeProvider>(context,listen: false).changeTheme();
+                    Consumer<ThemeProvider>(builder: (BuildContext context, value, Widget? child) {
+                     return GestureDetector(
+                        onTap: () {
+                          value.changeTheme();
 
-                        print("${ Provider.of<ThemeProvider>(context,listen: false).isLight}");
-                      },
-                      child: Icon(
-                        Provider.of<ThemeProvider>(context,listen: true).isLight
-                        ? Icons.light_mode_outlined
-                        : Icons.dark_mode_outlined,
-                      ),
-                    ),
+                          // print("${ Provider.isLight}");
+                          // setState(() {});
+                        },
+                        child: Icon(
+                          value.isLight
+                              ? Icons.light_mode_outlined
+                              : Icons.dark_mode_outlined,
+                        ),
+                      );
+                    },)
                   ],
                 ),
                 Text(

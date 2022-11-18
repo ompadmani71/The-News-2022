@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier{
 
-  bool isLight = true;
+  bool isLight = false;
 
   void changeTheme(){
     isLight = !isLight;
     notifyListeners();
-    notifyListeners();
+
   }
 
 }

@@ -9,7 +9,8 @@ import 'package:the_news/utlits/app_constant.dart';
 import 'package:get/get.dart';
 
 void main() async {
-  Provider.debugCheckInvalidValueType = null;
+  // Provider.debugCheckInvalidValueType = null;
+
 
   runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,31 +29,33 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => ThemeProvider(),
-      builder: (context, _) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          themeMode: Provider.of<ThemeProvider>(context,listen: true).isLight == true
-          ? ThemeMode.light
-          : ThemeMode.dark,
-          theme: ThemeData(
-            primaryColor: Colors.teal,
-            primarySwatch: materialPurpleColor,
-            fontFamily: "OpenSans",
-          ),
-          darkTheme: ThemeData(
-            primaryColor: Colors.blueGrey,
-            primarySwatch: materialPurpleColor,
-            fontFamily: "OpenSans",
-          ),
-          home: const HomeScreen(),
-        );
-      },
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=> ThemeProvider())
+        ],
+    builder: (context,_){
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            themeMode: Provider.of<ThemeProvider>(context).isLight
+                ? ThemeMode.light
+                : ThemeMode.dark,
+            theme: ThemeData(
+              primaryColor: Colors.teal,
+              primarySwatch: materialLightTheme,
+              fontFamily: "OpenSans",
+            ),
+            darkTheme: ThemeData(
+              primaryColor: Colors.blueGrey,
+              primarySwatch: materialDarkTheme ,
+              fontFamily: "OpenSans",
+            ),
+            home: const HomeScreen(),
+          );
+    },
     );
   }
 
-  MaterialColor materialPurpleColor = MaterialColor(
+  MaterialColor materialLightTheme = MaterialColor(
     AppColors.lightPurple.value,
     const <int, Color>{
       50: Colors.teal,
@@ -65,6 +68,22 @@ class _MyAppState extends State<MyApp> {
       700: Colors.teal,
       800: Colors.teal,
       900: Colors.teal,
+    },
+  );
+
+  MaterialColor materialDarkTheme = const MaterialColor(
+    0xffef5350,
+    <int, Color>{
+      50: Colors.red,
+      100: Colors.red,
+      200: Colors.red,
+      300: Colors.red,
+      400: Colors.red,
+      500: Colors.red,
+      600: Colors.red,
+      700: Colors.red,
+      800: Colors.red,
+      900: Colors.red,
     },
   );
 }
